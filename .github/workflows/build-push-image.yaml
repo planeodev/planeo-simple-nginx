@@ -8,10 +8,10 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
+    steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    
-    steps:
+
     - name: Replace Image Uri in helm chart
       env:
         IMAGE_URI: ${{ secrets.IMAGE_URI }}
