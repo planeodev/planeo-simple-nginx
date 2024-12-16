@@ -8,6 +8,10 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
+    permissions:
+      id-token: write
+      contents: read
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -19,7 +23,7 @@ jobs:
         sed -i 's|$IMAGE_URI|'"$IMAGE_URI"'|g' charts/simple-nginx/values.yaml
 
     - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@v4
       with:
         role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
         aws-region: ${{ secrets.AWS_REGION }}
