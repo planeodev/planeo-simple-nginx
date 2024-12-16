@@ -15,6 +15,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+ 
+    - name: Set short git commit SHA
+      run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
     - name: Replace Image Uri in helm chart
       env:
@@ -36,7 +39,7 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: planeo-simple-nginx
-        IMAGE_TAG: ${{ github.sha }}
+        IMAGE_TAG: ${{ env.SHORT_SHA }}
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
